@@ -37,3 +37,12 @@ class JS_Area:
     btn_set_text = (By.XPATH, ".//button[.='Set Text']")
     btn_start_loading = (By.XPATH, ".//button[.='Start loading']")
     text_status_loading = (By.ID, "startLoad")
+
+class Links:
+    # Field Links
+    fieldset_html_btns = (By.XPATH, "//fieldset[descendant::legend[.='Links']]")
+    link_next_page = (By.CSS_SELECTOR, "a[name='nextPage']")
+    link_windy = (By.CSS_SELECTOR, "a[name='myLink']")
+    link_tera_santa = (By.CSS_SELECTOR, "a[name='myLinkTS']")
+    link_java_book = (By.XPATH, ".//a[.=Java Book]")
+    link_youtube = (By.CSS_SELECTOR, ".//a[.=YouTube]")
