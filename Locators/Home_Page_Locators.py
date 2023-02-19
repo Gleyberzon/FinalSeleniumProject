@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 
 class Personal:
     # Filld Personal Information
-    fieldset_info = (By.XPATH, "//fieldset[descendant::legend[.='Personal Information']]")
+    fieldset_info = (By.XPATH, ".//fieldset[descendant::legend[.='Personal Information']]")
     # text inputs & selectors
     input_fname = (By.NAME, "fname")
     input_lname = (By.NAME, "lname")

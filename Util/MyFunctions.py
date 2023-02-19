@@ -51,8 +51,8 @@ def LogTest(path, testName, testDescription, parametres, expected, actual, isPas
         f.write(f"Expected result: {expected}\n")
         f.write(f"Actual result: {actual}\n\n\n")
         f.close()
-    except Exception:
-        print("Log writing error")
+    except Exception as e:
+        print("Log writing error: "+e)
 
 
 def get_vars(env=".env"):
