@@ -7,7 +7,7 @@ class Personal:
     # text inputs & selectors
     input_fname = (By.NAME, "fname")
     input_lname = (By.NAME, "lname")
-    selector_city = (By.NAME, "city")
+    selector_city = (By.NAME, "City")
     input_email = (By.NAME, "email")
     selector_area_code = (By.NAME, "areaCode")
     input_tel = (By.NAME, "phone")
