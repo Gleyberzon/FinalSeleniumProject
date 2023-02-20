@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv, dotenv_values
 import ast
+from selenium import webdriver
 
 
 def Log(path, mess, time=True):
@@ -23,7 +24,7 @@ def Log(path, mess, time=True):
         print("Log writing error")
 
 
-def LogTest(path, testName, testDescription, parametres, expected, actual, isPassed):
+def LogTest(path, testName, testDescription, parametres, expected, actual, isPassed, driver=None):
     """
     Name: Roman Gleyberzon
     Date: 18/1/2023
@@ -31,9 +32,19 @@ def LogTest(path, testName, testDescription, parametres, expected, actual, isPas
     Input: Content of log
     Output: None
     """
+
     import datetime
+    if driver!=None:
+        formatted_date = datetime.datetime.now().strftime("%H-%M__%d-%m-%Y")
+        filename = f'{testName}_{formatted_date}'
+        driver.save_screenshot(f'..\\Screenshots\\{filename}.png')
     try:
-        f = open(path, "a")
+        try:
+            f = open(path, "a")
+        except:
+            path = path[3:]
+            f = open(path, "a")
+
         current = datetime.datetime.now()
         day = current.day
         month = current.month
