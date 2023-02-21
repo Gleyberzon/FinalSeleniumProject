@@ -32,7 +32,7 @@ class HTML_Buttons:
 
 class JS_Area:
     # Field JS Buttons
-    fieldset_html_btns = (By.XPATH, "//fieldset[descendant::legend[.='JS Buttons']]")
+    fieldset_js_btns = (By.XPATH, "//fieldset[descendant::legend[.='JS Buttons']]")
     text_field = (By.ID, 'pbyuser')
     btn_set_text = (By.XPATH, ".//button[.='Set Text']")
     btn_start_loading = (By.XPATH, ".//button[.='Start loading']")
@@ -40,9 +40,9 @@ class JS_Area:
 
 class Links:
     # Field Links
-    fieldset_html_btns = (By.XPATH, "//fieldset[descendant::legend[.='Links']]")
+    fieldset_links = (By.XPATH, "//fieldset[descendant::legend[.='Links']]")
     link_next_page = (By.CSS_SELECTOR, "a[name='nextPage']")
     link_windy = (By.CSS_SELECTOR, "a[name='myLink']")
     link_tera_santa = (By.CSS_SELECTOR, "a[name='myLinkTS']")
-    link_java_book = (By.XPATH, ".//a[.=Java Book]")
-    link_youtube = (By.CSS_SELECTOR, ".//a[.=YouTube]")
+    link_java_book = (By.XPATH, ".//a[.='Java Book']")
+    link_youtube = (By.XPATH, ".//a[.='YouTube']")

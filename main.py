@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from Locators.Home_Page_Locators import *
 #from Tests.test_home_page import Test_Home_Page
 import datetime
+import pyodbc
+import re
 
 # load_dotenv()
 # driver = webdriver.Chrome()
@@ -30,4 +32,6 @@ import datetime
 # send = htm.find_element(*HTML_Buttons.btn_send)
 # send.click()
 # # fname.send_keys("Some")
-# print(fname.get_attribute("validationMessage"))
+# # print(fname.get_attribute("validationMessage"))
+ls = [1,2,3]
+print(ls[-1])

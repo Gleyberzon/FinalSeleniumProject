@@ -35,7 +35,7 @@ def LogTest(path, testName, testDescription, parametres, expected, actual, isPas
 
     import datetime
     if driver!=None:
-        formatted_date = datetime.datetime.now().strftime("%H-%M__%d-%m-%Y")
+        formatted_date = datetime.datetime.now().strftime("%H-%M-%S__%d-%m-%Y")
         filename = f'{testName}_{formatted_date}'
         driver.save_screenshot(f'..\\Screenshots\\{filename}.png')
     try:
