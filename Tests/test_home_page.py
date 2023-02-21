@@ -29,7 +29,7 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
     path = os.getenv("PATH_LOG_TESTS").format("test_log__" + formatted_date)
 
     # Check if title is correct
-    def test_title(self, expected_title=None, dr=None):
+    def test_title(self, expected_title=None):
         """
         Name: Roman Gleyberzon
         Date: 21/02/2023
@@ -39,8 +39,6 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         """
         if expected_title == None:
             expected_title = os.getenv("EXP_HOME_TITLE")
-        if dr == None:
-            dr = Test_Home_Page.driver
         Base_Page.make_test_title(self, expected_title)
 
     # Tries to choose all genders
@@ -632,3 +630,4 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Output: None
         """
         unittest.main()
+        self.driver.quit()
