@@ -134,35 +134,62 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
     def test_input_fname(self):
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_fname)
-        text = os.getenv("TEST_FNAME")
+        texts = ast.literal_eval(os.getenv("TEST_FNAMES"))
         prefix = "First Name"
-        Base_Page.make_test_input(self, input, text, prefix, int(os.getenv("MAX_LEN")))
+        failed=False
+        for text in texts:
+            try:
+                Base_Page.make_test_input(self, input, text, prefix, int(os.getenv("MAX_LEN")))
+            except AssertionError:
+                failed=True
+        if failed:
+            self.assert_(False)
 
     def test_input_lname(self):
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_lname)
-        text = os.getenv("TEST_LNAME")
+        texts = ast.literal_eval(os.getenv("TEST_LNAMES"))
         prefix = "Last Name"
-        Base_Page.make_test_input(self, input, text, prefix, int(os.getenv("MAX_LEN")))
+        for text in texts:
+            try:
+                Base_Page.make_test_input(self, input, text, prefix, int(os.getenv("MAX_LEN")))
+            except AssertionError:
+                failed = True
+        if failed:
+            self.assert_(False)
 
     def test_input_email(self):
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_email)
-        text = os.getenv("TEST_EMAIL")
+        texts = ast.literal_eval(os.getenv("TEST_EMAILS"))
         prefix = "Email"
-        Base_Page.make_test_input(self, input, text, prefix)
+        failed=False
+        for text in texts:
+            try:
+                Base_Page.make_test_input(self, input, text, prefix)
+            except AssertionError:
+                failed = True
+        if failed:
+            self.assert_(False)
 
     def test_input_tel(self):
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_tel)
-        text = os.getenv("TEST_TEL")
+        texts = ast.literal_eval(os.getenv("TEST_TELS"))
         prefix = "Tel"
-        Base_Page.make_test_input(self, input, text, prefix)
+        failed = False
+        for text in texts:
+            try:
+                Base_Page.make_test_input(self, input, text, prefix)
+            except AssertionError:
+                failed = True
+        if failed:
+            self.assert_(False)
 
     def test_clear(self):
         try:
             testName = "test_clear"
-            testDescription = "Test of button 'Clear"
+            testDescription = "Test of button 'Clear'"
             parametres = "None"
             expected = f"All inputs epmty. Selector city have value '{os.getenv('CORRECT_DEFOULT_CITY')}'. Selector Area Code have value '{os.getenv('CORRECT_DEFOUL_AREA')}'. All radio and checkers unselected."
             field = self.driver.find_element(*Personal.fieldset_info)
@@ -262,6 +289,7 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
                 Base_Page.make_test_send_positive(self,row, conn)
             except:
                 assertStatus = False
+        conn.close()
         if not assertStatus:
             raise AssertionError
     def test_send_negative(self):
@@ -280,9 +308,9 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
                 Base_Page.make_test_send_negative(self,row, conn)
             except:
                 assertStatus=False
+        conn.close()
         if not assertStatus:
             raise AssertionError
-
 
 
     def test_set_test(self):
@@ -394,5 +422,3 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
 
     def run_all_tests(self):
         unittest.main()
-
-

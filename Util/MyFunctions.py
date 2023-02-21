@@ -1,4 +1,6 @@
 import os
+import time
+
 from dotenv import load_dotenv, dotenv_values
 import ast
 from selenium import webdriver
@@ -37,7 +39,11 @@ def LogTest(path, testName, testDescription, parametres, expected, actual, isPas
     if driver!=None:
         formatted_date = datetime.datetime.now().strftime("%H-%M-%S__%d-%m-%Y")
         filename = f'{testName}_{formatted_date}'
-        driver.save_screenshot(f'..\\Screenshots\\{filename}.png')
+        if os.path.exists("..\\Screenshots"):
+            driver.save_screenshot(f'..\\Screenshots\\{filename}.png')
+        else:
+            driver.save_screenshot(f'Screenshots\\{filename}.png')
+        time.sleep(1)
     try:
         try:
             f = open(path, "a")

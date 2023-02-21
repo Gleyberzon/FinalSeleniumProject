@@ -12,10 +12,18 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 import requests
 
+
 class Base_Page(unittest.TestCase, ABC):
 
     # Check if title is correct
     def make_test_title(self, expected_title):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method compare given title with current title
+        Input: Title (str)
+        Output: None
+        """
         try:
             # self.path = os.getenv("PATH_LOG_TESTS")
             testName = "test_title"
@@ -34,7 +42,15 @@ class Base_Page(unittest.TestCase, ABC):
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False)
             assert False
 
+    # Check if all options are selectable
     def make_test_selector(self, selector: Select, options, prefix):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method tries to select all options of selector by visible text
+        Input: selector, options
+        Output: None
+        """
         try:
             testName = "test_selector"
             parametres = "None"
@@ -44,8 +60,7 @@ class Base_Page(unittest.TestCase, ABC):
                 selector.select_by_visible_text(option)
                 actual = f"{selector.first_selected_option.text} selected"
                 self.assertEqual(expected, actual)
-                LogTest(self.path, testName, testDescription, parametres, expected, actual, True,
-                        self.driver)
+                LogTest(self.path, testName, testDescription, parametres, expected, actual, True)
         except AssertionError:
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False,
                     self.driver)
@@ -55,12 +70,21 @@ class Base_Page(unittest.TestCase, ABC):
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False)
             self.assert_(False)
 
+    # Set given text to input and check that it setted
     def make_test_input(self, text_input, text, prefix, max_len=None):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method tries to set given text to input and check that it setted if max length allows
+        Input: input, text, max_len(optional)
+        Output: None
+        """
         try:
             testName = f"test_input_{prefix}"
             testDescription = "Trying to input given text"
             parametres = f"Text: {text}"
-            text_input.send_keys(text)
+            text_input.clear()
+            text_input.send_keys(str(text))
             if max_len == None or not isinstance(max_len, int) or max_len <= 0:
                 expected = f"Entered text: {text}"
             else:
@@ -68,7 +92,7 @@ class Base_Page(unittest.TestCase, ABC):
 
             actual = f"Entered text: {text_input.get_attribute('value')}"
             self.assertEqual(expected, actual)
-            LogTest(self.path, testName, testDescription, parametres, expected, actual, True, self.driver)
+            LogTest(self.path, testName, testDescription, parametres, expected, actual, True)
         except AssertionError:
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
             self.assert_(False)
@@ -77,46 +101,61 @@ class Base_Page(unittest.TestCase, ABC):
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False)
             self.assert_(False)
 
+    # Go to link and verify status code
     def make_test_link(self, link, linkname, title=None):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method goes to url of given link and ver*ify that status code is 200
+        (if given title instead of status code verify title)
+        Input: link, link, linkname, title(optional)
+        Output: None
+        """
         try:
             testName = "test_link"
             testDescription = f"Click on link {linkname}"
             expected = "Status code 200"
             parametres = "None"
-            parent_handle = self.driver.current_window_handle
             link.send_keys(Keys.CONTROL + Keys.RETURN)
 
             handles = self.driver.window_handles
 
             self.driver.switch_to.window(handles[-1])
-            if title==None:
+            if title == None:
                 r = requests.get(self.driver.current_url)
                 status = r.status_code
                 actual = f"Status code {status}"
-                self.assertEqual(expected,actual)
+                self.assertEqual(expected, actual)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, True)
             else:
                 expected = f"Title is: '{title}'"
                 actual = f"Title is: '{self.driver.title}'"
-                self.assertEqual(expected,actual)
+                self.assertEqual(expected, actual)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, True)
         except AssertionError:
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
             self.assert_(False)
         except Exception as e:
-            actual=f"Raised exception: {e}"
+            actual = f"Raised exception: {e}"
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False)
             self.assert_(False)
         finally:
             self.driver.close()
             self.driver.switch_to.window(handles[0])
 
-
+    # Tries to send correct data (if data actually correct)
     def make_test_send_positive(self, row, conn):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method get row of data from DB and tries it to send
+        Input: row, connection
+        Output: None
+        """
         try:
             testName = "test_send_positive"
             testDescription = "In this test we take correct data from db and trying to send"
-            parametres = "Given parameter: "+str(row)
+            parametres = "Given parameter: " + str(row)
             expected = f"Successfull send"
             field = self.driver.find_element(*Personal.fieldset_info)
             fname = field.find_element(*Personal.input_fname)
@@ -141,7 +180,7 @@ class Base_Page(unittest.TestCase, ABC):
             clear_btn.click()
             personId, tfname, tlname, tcity, temail, tarea, ttel, tgender = row
             if not self.is_valid_fname(tfname):
-                actual = os.getenv("WRONG_ARGUMENT").format('First Name',tfname)
+                actual = os.getenv("WRONG_ARGUMENT").format('First Name', tfname)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False)
                 self.assert_(False)
             if not self.is_valid_lname(tlname):
@@ -206,25 +245,25 @@ class Base_Page(unittest.TestCase, ABC):
                 other.click()
             send_btn.click()
             if fname.get_attribute('validationMessage') != '':
-                actual = "Data not sended. Reason - raised error on parameter '{}' that have vale {}".format('First Name',tfname)
+                actual = os.getenv("NOT_SENDED").format('First Name', tfname)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
             if lname.get_attribute('validationMessage') != '':
-                actual = "Data not sended. Reason - raised error on parameter '{}' that have vale {}".format(
+                actual = os.getenv("NOT_SENDED").format(
                     'Last Name', tlname)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
             if email.get_attribute('validationMessage') != '':
-                actual = "Data not sended. Reason - raised error on parameter '{}' that have vale {}".format(
+                actual = os.getenv("NOT_SENDED").format(
                     'Email', temail)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
             if tel.get_attribute('validationMessage') != '':
-                actual = "Data not sended. Reason - raised error on parameter '{}' that have vale {}".format(
+                actual = os.getenv("NOT_SENDED").format(
                     'Tel', ttel)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
-            LogTest(self.path, testName, testDescription, parametres, expected, expected, True, self.driver)
+            LogTest(self.path, testName, testDescription, parametres, expected, expected, True)
             self.assert_(True)
         except AssertionError as e:
             self.assert_(False)
@@ -232,9 +271,17 @@ class Base_Page(unittest.TestCase, ABC):
             actual = f"Raised error: {e}"
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
 
+    # Tties to send incorrect data
     def make_test_send_negative(self, row, conn):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method get row of data from DB and tries it to send
+        Input: row, connection
+        Output: None
+        """
         try:
-            parametres=None
+            parametres = None
             actual = ""
             testName = "test_send_negative"
             testDescription = "In this test we take incorrect data from db and trying to send"
@@ -264,8 +311,8 @@ class Base_Page(unittest.TestCase, ABC):
             clear_btn.click()
             personId, tfname, tlname, tcity, temail, tarea, ttel, tgender = row
             dataValid = True
-            correct_params=[]
-            incorrect_params=[]
+            correct_params = []
+            incorrect_params = []
             # Fname
             if not self.is_valid_fname(tfname):
                 incorrect_params.append(f"First Name: {tfname}")
@@ -286,14 +333,14 @@ class Base_Page(unittest.TestCase, ABC):
                 correct_params.append(f"Email: {temail}")
             # City
             if not self.is_valid_city(tcity):
-                warnings.warn("DB have not valid {}: {} and will be replaced by {}".format("City", tcity,os.getenv("CORRECT_DEFOULT_CITY")))
+                warnings.warn(os.getenv("WILL_REPLACED").format("City", tcity, os.getenv("CORRECT_DEFOULT_CITY")))
                 tcity = os.getenv("CORRECT_DEFOULT_CITY")
                 correct_params.append(f"City: {tcity}")
             else:
                 correct_params.append(f"City: {tcity}")
             # Gender
             if not self.is_valid_gender(tgender):
-                warnings.warn("DB have not valid {}: {} and will be replaced by {}".format("Gender", tgender, 'Other'))
+                warnings.warn(os.getenv("WILL_REPLACED").format("Gender", tgender, 'Other'))
                 tgender = 'Other'
                 correct_params.append(f"Gender: {tgender}")
             else:
@@ -312,18 +359,18 @@ class Base_Page(unittest.TestCase, ABC):
                 correct_params.append(f"Tel: {ttel}")
             # Area
             if not self.is_valid_area(tgender):
-                warnings.warn("DB have not valid {}: {} and will be replaced by {}".format("Area", tarea, os.getenv("CORRECT_DEFOUL_AREA")))
-                tarea=os.getenv("CORRECT_DEFOUL_AREA")
+                warnings.warn(os.getenv("WILL_REPLACED").format("Area", tarea, os.getenv("CORRECT_DEFOUL_AREA")))
+                tarea = os.getenv("CORRECT_DEFOUL_AREA")
                 correct_params.append(f"Area: {tarea}")
             else:
                 correct_params.append(f"Area: {tarea}")
             # Subjects
             subject_cursor = conn.cursor()
-            subject_cursor.execute(f"select checkbox from Subjects where id='{personId}'")
+            subject_cursor.execute(os.getenv("QUERY_SUBJECTS").format(personId))
             subjects = []
             for subject in subject_cursor:
                 if not self.is_valid_subject(subject[0]):
-                    warnings.warn("DB have not valid {}: {} and will not be checked".format("Subject", subject[0]))
+                    warnings.warn(os.getenv("WILL_NOT_CHECKED").format("Subject", subject[0]))
                 else:
                     if subject[0] == 'Math':
                         math.click()
@@ -346,12 +393,12 @@ class Base_Page(unittest.TestCase, ABC):
                     if subject[0] == 'DUD':
                         dud.click()
                         subjects.append('DUD')
-            parametres = "\nCorrect parametres: "+", ".join(correct_params)
-            parametres += "\nSubjects: "+", ".join(subject)
-            parametres += "\nIncorrect parametres: "+", ".join(incorrect_params)
+            parametres = "\nCorrect parametres: " + ", ".join(correct_params)
+            parametres += "\nSubjects: " + ", ".join(subject)
+            parametres += "\nIncorrect parametres: " + ", ".join(incorrect_params)
 
             if dataValid:
-                actual="Given parametres are all corrects, so not sute to test"
+                actual = os.getenv("NOT_SUIT")
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False)
                 self.assert_(False)
 
@@ -367,26 +414,40 @@ class Base_Page(unittest.TestCase, ABC):
 
             # Check Fname
             if not self.is_valid_fname(tfname) and fname.get_attribute('validationMessage') == '':
-                actual = "Parameter '{}: with value {}' identified as valid".format('First Name',tfname)
+                actual = os.getenv("IDENTIFIED_AS_VALID").format('First Name', tfname)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
+            elif fname.get_attribute('validationMessage') != '':
+                LogTest(self.path, testName, testDescription, parametres, expected, expected, True)
+                self.assert_(True)
+                return
             # Check Lname
             if not self.is_valid_lname(tlname) and lname.get_attribute('validationMessage') == '':
-                actual = "Parameter '{}: with value {}' identified as valid".format('Last Name',tlname)
+                actual = os.getenv("IDENTIFIED_AS_VALID").format('Last Name', tlname)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
+            elif lname.get_attribute('validationMessage') != '':
+                LogTest(self.path, testName, testDescription, parametres, expected, expected, True)
+                self.assert_(True)
+                return
             # Check Email
             if not self.is_valid_email(temail) and email.get_attribute('validationMessage') == '':
-                actual = "Parameter '{}: with value {}' identified as valid".format('Email', temail)
+                actual = os.getenv("IDENTIFIED_AS_VALID").format('Email', temail)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
+            elif email.get_attribute('validationMessage') != '':
+                LogTest(self.path, testName, testDescription, parametres, expected, expected, True)
+                self.assert_(True)
+                return
             # Check Tel
             if not self.is_valid_tel(ttel) and tel.get_attribute('validationMessage') == '':
-                actual = "Parameter '{}: with value {}' identified as valid".format('Tel', ttel)
+                actual = os.getenv("IDENTIFIED_AS_VALID").format('Tel', ttel)
                 LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
                 self.assert_(False)
             LogTest(self.path, testName, testDescription, parametres, expected, expected, True)
-        except AssertionError as e:
+
+
+        except AssertionError:
             self.assert_(False)
         except Exception as e:
             actual = f"Raised error: {e}"
