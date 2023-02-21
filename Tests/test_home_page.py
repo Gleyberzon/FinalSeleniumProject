@@ -30,13 +30,28 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
 
     # Check if title is correct
     def test_title(self, expected_title=None, dr=None):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method compare given title with current title
+        Input: Title (str)
+        Output: None
+        """
         if expected_title == None:
             expected_title = os.getenv("EXP_HOME_TITLE")
         if dr == None:
             dr = Test_Home_Page.driver
         Base_Page.make_test_title(self, expected_title)
 
+    # Tries to choose all genders
     def test_gender(self):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method tries to choose all genders
+        Input: None
+        Output: None
+        """
         try:
             testName = "test_gender"
             parametres = "None"
@@ -84,7 +99,15 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
             LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, False)
             self.assert_(False)
 
+    # Tries to click all checkboxes twice
     def test_checkboxes(self):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method tries to click all checkboxes twice
+        Input: None
+        Output: None
+        """
         try:
             testName = "test_checkboxes"
             parametres = "None"
@@ -117,21 +140,45 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
             LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, False)
             self.assert_(False)
 
+    # Tries to check that all options of area code are selecteble
     def test_selector_city(self):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method tries to check that all options of city are selecteble
+        Input: None
+        Output: None
+        """
         options = ast.literal_eval(os.getenv("CITiES"))
         field = self.driver.find_element(*Personal.fieldset_info)
         selector = Select(field.find_element(*Personal.selector_city))
         prefix = "City"
         Base_Page.make_test_selector(self, selector, options, prefix)
 
+    # Tries to check that all options of city are selecteble
     def test_selector_area_code(self):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method tries to check that all options of area code are selecteble
+        Input: None
+        Output: None
+        """
         options = ast.literal_eval(os.getenv("AREA_CODES"))
         field = self.driver.find_element(*Personal.fieldset_info)
         selector = Select(field.find_element(*Personal.selector_area_code))
         prefix = "Area code"
         Base_Page.make_test_selector(self, selector, options, prefix)
 
+    # Check that input fname actually get text
     def test_input_fname(self):
+        """
+        Name: Roman Gleyberzon
+        Date: 21/02/2023
+        Description: This method tries to check that input fname actually get text
+        Input: None
+        Output: None
+        """
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_fname)
         texts = ast.literal_eval(os.getenv("TEST_FNAMES"))
@@ -145,7 +192,15 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         if failed:
             self.assert_(False)
 
+    # Check that input lname actually get text
     def test_input_lname(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method tries to check that input lname actually get text
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_lname)
         texts = ast.literal_eval(os.getenv("TEST_LNAMES"))
@@ -158,7 +213,15 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         if failed:
             self.assert_(False)
 
+    # Check that input email actually get text
     def test_input_email(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method tries to check that input email actually get text
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_email)
         texts = ast.literal_eval(os.getenv("TEST_EMAILS"))
@@ -172,7 +235,15 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         if failed:
             self.assert_(False)
 
+    # Check that input tel actually get text
     def test_input_tel(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method tries to check that input tel actually get text
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_tel)
         texts = ast.literal_eval(os.getenv("TEST_TELS"))
@@ -186,7 +257,15 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         if failed:
             self.assert_(False)
 
+    # Check button Clear
     def test_clear(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method check button Clear
+          Input: None
+          Output: None
+        """
         try:
             testName = "test_clear"
             testDescription = "Test of button 'Clear'"
@@ -273,13 +352,18 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
             LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, False)
             self.assert_(False)
 
+    # Send correct data
     def test_send_positive(self):
-        conn = pyodbc.connect('Driver={SQL Server};'
-                              'Server=DESKTOP-NRHU0LQ\\SQLEXPRESS;'
-                              'Database=correct_db_persons;'
-                              'Trusted_Connection=yes;')
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method makes positive test of sending data
+          Input: None
+          Output: None
+        """
+        conn = pyodbc.connect(os.getenv("CORRECT_DATA_DB"))
         cursor = conn.cursor()
-        cursor.execute("select * from persons")
+        cursor.execute(os.getenv("QUERY_PERSONS"))
         rows = []
         for row in cursor:
             rows.append(row)
@@ -292,13 +376,19 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         conn.close()
         if not assertStatus:
             raise AssertionError
+
+    # Send incorrect data
     def test_send_negative(self):
-        conn = pyodbc.connect('Driver={SQL Server};'
-                              'Server=DESKTOP-NRHU0LQ\\SQLEXPRESS;'
-                              'Database=incorrect_db_persones;'
-                              'Trusted_Connection=yes;')
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method makes negative test of sending data
+          Input: None
+          Output: None
+        """
+        conn = pyodbc.connect(os.getenv("INCORRECT_DATA_DB"))
         cursor = conn.cursor()
-        cursor.execute("select * from persons")
+        cursor.execute(os.getenv("QUERY_PERSONS"))
         rows = []
         assertStatus = True
         for row in cursor:
@@ -312,8 +402,15 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         if not assertStatus:
             raise AssertionError
 
-
+    # Set text to prompt
     def test_set_test(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method check setting text to prompt
+          Input: None
+          Output: None
+        """
         try:
             testName = "test_set_test"
             testDescription = "Try to set text to prompt"
@@ -338,7 +435,15 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
             LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, False, self.driver)
             self.assert_(False)
 
+    # Test button 'Start Loading'
     def test_start_loading(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method test button 'Start Loading'
+          Input: None
+          Output: None
+        """
         try:
             testName = "test_start_loading"
             testDescription = "Click on start loading"
@@ -364,61 +469,166 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
             LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, False, self.driver)
             self.assert_(False)
 
+    # Test link Windy
     def test_link_windy(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method link windy (status 200)
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_windy)
         Base_Page.make_test_link(self,link,"Windy")
 
+    # Test link YouTube
     def test_link_youtube(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method link YouTube (status 200)
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_youtube)
         Base_Page.make_test_link(self,link,"YouTube")
 
+    # Test link Tera Santa
     def test_link_tera_santa(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method link Tera Santa (status 200)
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_tera_santa)
         Base_Page.make_test_link(self,link,"Tera Santa")
 
+    # Test link Java Book
     def test_link_java_book(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method link Java Book (status 200)
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_java_book)
         Base_Page.make_test_link(self,link,"Java Book")
 
+    # Test link Next Page
     def test_link_next_page(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method link next page (title)
+          Input: None
+          Output: None
+        """
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_next_page)
         Base_Page.make_test_link(self,link,"Next Page", "Next Page")
 
 
     def is_valid_fname(self, name):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of First Name
+          Input: name
+          Output: bool
+        """
         if len(name)>int(os.getenv("MAX_LEN") or len(name)<2):
             return False
         return not not re.fullmatch(r"[A-z]*",name)
 
     def is_valid_lname(self, name):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of Last Name
+          Input: name
+          Output: bool
+        """
         if len(name)>int(os.getenv("MAX_LEN") or len(name)<2):
             return False
         return not not re.fullmatch(r"[A-z]*",name)
 
     def is_valid_email(self, email):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of Email
+          Input: email
+          Output: bool
+        """
         return not not re.fullmatch(r"^(?:(?!.*?[.]{2})[a-zA-Z0-9](?:[a-zA-Z0-9.+!%-]{1,64}|)|\"[a-zA-Z0-9.+!% -]{1,64}\")@[a-zA-Z0-9][a-zA-Z0-9.-]+(.[a-z]{2,}|.[0-9]{1,})",email)
 
     def is_valid_tel(self, tel):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of Tel
+          Input: tel
+          Output: bool
+        """
         if len(tel)!=7:
             return False
         return re.fullmatch(r"[0-9]*", tel)
 
     def is_valid_city(self, city):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of City
+          Input: city
+          Output: bool
+        """
         return city in ast.literal_eval(os.getenv("CITiES"))
 
     def is_valid_area(self, area):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of Area code
+          Input: area code
+          Output: bool
+        """
         return area in ast.literal_eval(os.getenv("AREA_CODES"))
 
     def is_valid_subject(self, subject):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of Subject
+          Input: subject
+          Output: bool
+        """
         return subject in ast.literal_eval(os.getenv("SUBJECTS"))
 
     def is_valid_gender(self, gender):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Check validation of Gender
+          Input: gender
+          Output: bool
+        """
         return gender in ast.literal_eval(os.getenv("GENDERS"))
 
+
+    # I run all tests :-)
     def run_all_tests(self):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: Run all tests of current unittest
+          Input: None
+          Output: None
+        """
         unittest.main()
