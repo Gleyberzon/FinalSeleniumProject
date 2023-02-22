@@ -453,3 +453,44 @@ class Base_Page(unittest.TestCase, ABC):
             actual = f"Raised error: {e}"
             LogTest(self.path, testName, testDescription, parametres, expected, actual, False)
             self.assert_(False)
+
+
+    # Set text to prompt
+    def make_test_set_test(self, text):
+        """
+          Name: Roman Gleyberzon
+          Date: 21/02/2023
+          Description: This method check setting text to prompt
+          Input: None
+          Output: None
+        """
+        try:
+            testName = "test_set_test"
+            testDescription = "Try to set text to prompt"
+            field = self.driver.find_element(*JS_Area.fieldset_js_btns)
+            table = field.find_element(*JS_Area.text_field)
+            btn = field.find_element(*JS_Area.btn_set_text)
+            btn.click()
+            alert = self.driver.switch_to.alert
+            alert.send_keys(text)
+            alert.accept()
+            parametres = f"Text: {text}"
+            expected = f"Setted text: {text}"
+            ls = list(table.text)
+            for i in range(len(ls)):
+                if ls[i] == '\n':
+                    ls[i] = '\\n'
+                if ls[i] == '\t':
+                    ls[i] = '\\t'
+                if ls[i] == '\b':
+                    ls[i] = '\\b'
+            actual = f"Setted text: {''.join(ls)}"
+            self.assertEqual(expected,actual)
+            LogTest(self.path, testName, testDescription, parametres, expected, actual, True)
+        except AssertionError as e:
+            LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
+            self.assert_(False)
+        except Exception as e:
+            actual = f"Raised error: {e}"
+            LogTest(self.path, testName, testDescription, parametres, expected, actual, False, self.driver)
+            self.assert_(False)

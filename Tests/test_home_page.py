@@ -409,29 +409,16 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
-        try:
-            testName = "test_set_test"
-            testDescription = "Try to set text to prompt"
-            text = os.getenv("TEXT")
-            field = self.driver.find_element(*JS_Area.fieldset_js_btns)
-            table = field.find_element(*JS_Area.text_field)
-            btn = field.find_element(*JS_Area.btn_set_text)
-            btn.click()
-            alert = self.driver.switch_to.alert
-            alert.send_keys(text)
-            alert.accept()
-            parametres = f"Text: {text}"
-            expected = f"Setted text: {text}"
-            actual = f"Setted text: {table.text}"
-            self.assertEqual(expected,actual)
-            LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, True)
-        except AssertionError as e:
-            LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, False, self.driver)
-            self.assert_(False)
-        except Exception as e:
-            actual = f"Raised error: {e}"
-            LogTest(Test_Home_Page.path, testName, testDescription, parametres, expected, actual, False, self.driver)
-            self.assert_(False)
+        failed=False
+        texts=ast.literal_eval(os.getenv("TEXTS"))
+        for text in texts:
+            try:
+                Base_Page.make_test_set_test(self,text)
+            except:
+                failed=True
+        if failed:
+            raise AssertionError
+
 
     # Test button 'Start Loading'
     def test_start_loading(self):
