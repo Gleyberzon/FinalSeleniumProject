@@ -519,7 +519,6 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         link = field.find_element(*Links.link_next_page)
         Base_Page.make_test_link(self,link,"Next Page", "Next Page")
 
-
     def is_valid_fname(self, name):
         """
           Name: Roman Gleyberzon
@@ -605,8 +604,6 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Output: bool
         """
         return gender in ast.literal_eval(os.getenv("GENDERS"))
-
-
     # I run all tests :-)
     def run_all_tests(self):
         """

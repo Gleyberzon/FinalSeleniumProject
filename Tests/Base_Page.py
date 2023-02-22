@@ -1,7 +1,7 @@
 import os
 import unittest
 import warnings
-
+from Util.MyFunctions import *
 import pyodbc
 from Locators.Home_Page_Locators import *
 from abc import ABC, abstractmethod
@@ -90,7 +90,7 @@ class Base_Page(unittest.TestCase, ABC):
             else:
                 expected = f"Entered text: {text[:max_len]}"
 
-            actual = f"Entered text: {text_input.get_attribute('value')}"
+            actual = f"Entered text: {clear_escape_chars(text_input.get_attribute('value'))}"
             self.assertEqual(expected, actual)
             LogTest(self.path, testName, testDescription, parametres, expected, actual, True)
         except AssertionError:
@@ -476,15 +476,7 @@ class Base_Page(unittest.TestCase, ABC):
             alert.accept()
             parametres = f"Text: {text}"
             expected = f"Setted text: {text}"
-            ls = list(table.text)
-            for i in range(len(ls)):
-                if ls[i] == '\n':
-                    ls[i] = '\\n'
-                if ls[i] == '\t':
-                    ls[i] = '\\t'
-                if ls[i] == '\b':
-                    ls[i] = '\\b'
-            actual = f"Setted text: {''.join(ls)}"
+            actual = f"Setted text: {clear_escape_chars(table.text)}"
             self.assertEqual(expected,actual)
             LogTest(self.path, testName, testDescription, parametres, expected, actual, True)
         except AssertionError as e:

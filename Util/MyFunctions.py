@@ -1,11 +1,11 @@
 import os
 import time
-
+import datetime
 from dotenv import load_dotenv, dotenv_values
 import ast
 from selenium import webdriver
 
-
+folder_screens=None
 def Log(path, mess, time=True):
     """
     Name: Roman Gleyberzon
@@ -35,14 +35,22 @@ def LogTest(path, testName, testDescription, parametres, expected, actual, isPas
     Output: None
     """
 
-    import datetime
+
+    global folder_screens
     if driver!=None:
         formatted_date = datetime.datetime.now().strftime("%H-%M-%S__%d-%m-%Y")
+        if folder_screens==None:
+            folder_screens="session__"+formatted_date
         filename = f'{testName}_{formatted_date}'
         if os.path.exists("..\\Screenshots"):
-            driver.save_screenshot(f'..\\Screenshots\\{filename}.png')
+            if not os.path.exists("..\\Screenshots\\"+folder_screens):
+                os.makedirs("..\\Screenshots\\"+folder_screens)
+            driver.save_screenshot(f'..\\Screenshots\\{folder_screens}\\{filename}.png')
         else:
-            driver.save_screenshot(f'Screenshots\\{filename}.png')
+            if os.path.exists("Screenshots"):
+                if not os.path.exists("Screenshots\\" + folder_screens):
+                    os.makedirs("Screenshots\\" + folder_screens)
+            driver.save_screenshot(f'Screenshots\\{folder_screens}\\{filename}.png')
         time.sleep(1)
     try:
         try:
@@ -124,3 +132,26 @@ def is_valid_num_list(ls):
         if not is_valid_positive_num(el):
             return False
     return True
+
+
+def clear_escape_chars(string):
+    """
+    Name: Roman Gleyberzon
+    Date: 21/02/2023
+    Description: This clears escape characters from string
+    Input: string
+    Output: string
+    """
+    ls = list(string)
+    for i in range(len(ls)):
+        if ls[i]=="\n":
+            ls[i]="\\n"
+        elif ls[i]=="\r":
+            ls[i]="\\r"
+        elif ls[i]=="\t":
+            ls[i]="\\t"
+        elif ls[i]=="\b":
+            ls[i]="\\b"
+        elif ls[i]=="\f":
+            ls[i]="\\f"
+    return ''.join(ls)
