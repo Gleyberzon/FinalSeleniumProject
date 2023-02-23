@@ -37,6 +37,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         Input: Title (str)
         Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         if expected_title == None:
             expected_title = os.getenv("EXP_HOME_TITLE")
         Base_Page.make_test_title(self, expected_title)
@@ -51,6 +53,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         Output: None
         """
         try:
+            if self.driver.current_url != os.getenv("HOME_PAGE_URL"):
+                self.driver.get(os.getenv("HOME_PAGE_URL"))
             testName = "test_gender"
             parametres = "None"
             fieldset_info = self.driver.find_element(*Personal.fieldset_info)
@@ -107,6 +111,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         Output: None
         """
         try:
+            if self.driver.current_url != os.getenv("HOME_PAGE_URL"):
+                self.driver.get(os.getenv("HOME_PAGE_URL"))
             testName = "test_checkboxes"
             parametres = "None"
             fieldset_info = self.driver.find_element(*Personal.fieldset_info)
@@ -147,6 +153,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         Input: None
         Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         options = ast.literal_eval(os.getenv("CITiES"))
         field = self.driver.find_element(*Personal.fieldset_info)
         selector = Select(field.find_element(*Personal.selector_city))
@@ -162,6 +170,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         Input: None
         Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         options = ast.literal_eval(os.getenv("AREA_CODES"))
         field = self.driver.find_element(*Personal.fieldset_info)
         selector = Select(field.find_element(*Personal.selector_area_code))
@@ -177,6 +187,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
         Input: None
         Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_fname)
         texts = ast.literal_eval(os.getenv("TEST_FNAMES"))
@@ -199,6 +211,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_lname)
         texts = ast.literal_eval(os.getenv("TEST_LNAMES"))
@@ -220,6 +234,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_email)
         texts = ast.literal_eval(os.getenv("TEST_EMAILS"))
@@ -242,6 +258,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Personal.fieldset_info)
         input = field.find_element(*Personal.input_tel)
         texts = ast.literal_eval(os.getenv("TEST_TELS"))
@@ -265,6 +283,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Output: None
         """
         try:
+            if self.driver.current_url != os.getenv("HOME_PAGE_URL"):
+                self.driver.get(os.getenv("HOME_PAGE_URL"))
             testName = "test_clear"
             testDescription = "Test of button 'Clear'"
             parametres = "None"
@@ -359,6 +379,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         conn = pyodbc.connect(os.getenv("CORRECT_DATA_DB"))
         cursor = conn.cursor()
         cursor.execute(os.getenv("QUERY_PERSONS"))
@@ -384,6 +406,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         conn = pyodbc.connect(os.getenv("INCORRECT_DATA_DB"))
         cursor = conn.cursor()
         cursor.execute(os.getenv("QUERY_PERSONS"))
@@ -409,6 +433,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         failed=False
         texts=ast.literal_eval(os.getenv("TEXTS"))
         for text in texts:
@@ -430,6 +456,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Output: None
         """
         try:
+            if self.driver.current_url != os.getenv("HOME_PAGE_URL"):
+                self.driver.get(os.getenv("HOME_PAGE_URL"))
             testName = "test_start_loading"
             testDescription = "Click on start loading"
             expected = "Printed text 'Finish'"
@@ -463,6 +491,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_windy)
         Base_Page.make_test_link(self,link,"Windy")
@@ -476,6 +506,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_youtube)
         Base_Page.make_test_link(self,link,"YouTube")
@@ -489,6 +521,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_tera_santa)
         Base_Page.make_test_link(self,link,"Tera Santa")
@@ -502,6 +536,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_java_book)
         Base_Page.make_test_link(self,link,"Java Book")
@@ -515,6 +551,8 @@ class Test_Home_Page(Base_Page, unittest.TestCase):
           Input: None
           Output: None
         """
+        if self.driver.current_url!=os.getenv("HOME_PAGE_URL"):
+            self.driver.get(os.getenv("HOME_PAGE_URL"))
         field = self.driver.find_element(*Links.fieldset_links)
         link = field.find_element(*Links.link_next_page)
         Base_Page.make_test_link(self,link,"Next Page", "Next Page")
