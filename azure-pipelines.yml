@@ -1,0 +1,16 @@
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+steps:
+- checkout: self
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+
+- script: |
+    python main.py
+  displayName: 'Run main.py'
